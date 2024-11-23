@@ -5,23 +5,36 @@
 
 int main()
 {
-    int status_utama = 1; // 0= berakhir,1 = berjalan, 2 = selesai
+    int status_utama = 1; // 0 = berakhir,1 = berjalan, 2 = selesai
     int status_tahapan = 1;
+    /*  status_tahapan == 1; mengambil input nama
+        status_tahapan == 2; mengambil input no anggota
+        status_tahapan == 3; membeli / meminjam
+        status_tahapan == 4; mengambil input jumlah buku
+        status_tahapan == 5; mengambil input no isbn tiap buku
+        status_tahapan == 6; memeriksa adanya voucher dan menghitung total harga
+    */
 
+    // Informasi buku sesuai dengan index nya, index 0 di satu array berhubungan dengan array lain sebagai property dari buku
     int array_no_isbn[4] = {1111, 2222, 3333, 4444};
     char array_judul_buku[4][20] = {"'aku'", "'seorang'", "'kapten'", "'baja hitam'"};
     int array_harga_beli[4] = {1500, 2500, 3500, 4500};
     int array_harga_pinjam[4] = {1000, 2000, 3000, 4000};
+
+    // Index dari array-array di atas tidak berpengaruh dengan array_voucher
     int array_voucher[4] = {10, 25, 50, 75};
 
+    // menghitung panjang array yang digunakan
     int panjang_array_no_isbn = sizeof(array_no_isbn) / sizeof(array_no_isbn[0]);
     int panjang_array_voucher = sizeof(array_voucher) / sizeof(array_voucher[0]);
     int panjang_array_judul_buku = sizeof(array_judul_buku) / sizeof(array_judul_buku[0]);
 
+    // Variabel penting
     int cek_isbn = 0;
     int cek_voucher;
 
-    char struk_nama[10];
+    // Variabel untuk struk
+    char struk_nama[50];
     int struk_no_anggota;
     int beli_atau_pinjam;
     int struk_jumlah_buku;
@@ -29,14 +42,12 @@ int main()
     int *struk_no_isbn;
     char(*struk_judul_buku)[20];
     //-------------------------
-    // int struk_no_isbn[struk_jumlah_buku + 1];
-    // char struk_judul_buku[struk_jumlah_buku + 2][20];
     int harga_sementara = 0;
     float struk_total_harga = 0;
     float struk_voucher;
     float diskon_voucher;
 
-    while (status_utama == 1)
+    while (status_utama == 1) // Program dimulai
     {
         while (status_tahapan == 1)
         {
@@ -44,15 +55,40 @@ int main()
             printf("\nTahap-1\n");
             printf("1. Masukan nama\n2. Batal\n[Pilih 1/2]\n== ");
             scanf("%d", &tahap_satu);
+
+            //--------------------------------- ai -------------------------------------------
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF)
+            {
+            } // menghapus newline tersisa dari scanf terkakhir
+
             switch (tahap_satu)
             {
             case 1:
                 printf("Nama = ");
-                scanf("%s", struk_nama);
+                // scanf("%s", &struk_nama);
+                fgets(struk_nama, sizeof(struk_nama), stdin);
+
+                size_t len = strlen(struk_nama);            // Mencari panjang string
+                if (len > 0 && struk_nama[len - 1] == '\n') // Periksa karakter terakhir
+                {
+                    struk_nama[len - 1] = '\0'; // Ganti dengan null
+                }
+
+                // Menghapus karakter newline di awal string jika ada
+                if (struk_nama[0] == '\n')
+                {
+                    memmove(struk_nama, struk_nama + 1, len); // memindah string ke kiri 1 langkah
+                }
+                //----------------------------------------------------------------------------------------
+
                 status_tahapan++;
                 break;
             case 2:
                 status_utama = 0;
+                break;
+            default:
+                printf("Tidak ada di pilihan\n");
                 break;
             }
         }
@@ -111,15 +147,16 @@ int main()
         {
             int tahap_empat = 0;
             printf("\nTahap-4");
-            if (beli_atau_pinjam == 1)
+            if (beli_atau_pinjam == 1) // membeli
             {
                 printf("\n1. Kamu ingin membeli berapa buku?\n2. Kembali\n3. Batal\n[Pilih 1/2/3]\n== ");
             }
-            else if (beli_atau_pinjam == 2)
+            else if (beli_atau_pinjam == 2) // meminjam
             {
                 printf("\n1. Kamu ingin meminjam berapa buku?\n2. Kembali\n3. Batal\n[Pilih 1/2/3]\n== ");
             }
             scanf("%d", &tahap_empat);
+
             switch (tahap_empat)
             {
             case 1:
@@ -157,11 +194,20 @@ int main()
                 {
                     printf("%d\n", array_no_isbn[j]);
                 }
-                for (int i = 0; i < struk_jumlah_buku; i++)
+
+                for (int i = 0; i < struk_jumlah_buku;)
                 {
-                    printf("Masukan no isbn buku ke-%d = ", i + 1);
+                    if (i != struk_jumlah_buku - 1)
+                    {
+                        printf("Masukan no isbn buku ke-%d = ", i + 1);
+                    }
+                    else
+                    {
+                        printf("Masukan no isbn buku terakhir = ");
+                    }
                     scanf("%d", &cek_isbn);
 
+                    // Di sini akan mengecek apakah isbn terdaftar atau tidak, apabila terdaftar maka akan masuk ke struk
                     int cek_status_isbn = 0;
                     int index_isbn;
                     for (int k = 0; k < panjang_array_no_isbn; k++)
@@ -176,7 +222,8 @@ int main()
                     if (cek_status_isbn == 1)
                     {
                         struk_no_isbn[i] = array_no_isbn[index_isbn];
-                        // masukan total_harga
+                        // Proses harga
+                        // Setelah isbn terverifikasi, menjumlahkan harga-harga dari buku ke variabel sementara sebelum dihitung voucher
                         if (beli_atau_pinjam == 1)
                         {
                             harga_sementara += array_harga_beli[index_isbn];
@@ -186,7 +233,9 @@ int main()
                             harga_sementara += array_harga_pinjam[index_isbn];
                         }
                         // masukan struk_judul
+                        // Setelah isbn terverifikasi, memasukan judul-judul buku ke dalam array buku yang akan ditampilkan di struk
                         strcpy(struk_judul_buku[i], array_judul_buku[index_isbn]);
+                        i++;
                     }
                     else
                     {
@@ -219,6 +268,8 @@ int main()
             switch (tahap_enam)
             {
             case 1:
+                // Apabila punya voucher, menginput voucher dan memeriksa apakah voucher terdaftar
+                // Voucher tidak berbentuk angka desimal
                 printf("Masukan angka voucher = ");
                 scanf("%d", &cek_voucher);
                 for (int i = 0; i < panjang_array_voucher; i++)
@@ -229,7 +280,7 @@ int main()
                         index_voucher = i;
                     }
                 }
-                if (cek_status_voucher == 1)
+                if (cek_status_voucher == 1) // apabila voucher terverifikasi maka menghitung harga-harga buku dengan voucher
                 {
                     struk_voucher = cek_voucher; // tampilan 10
                     diskon_voucher = (float)cek_voucher / 100;
@@ -250,13 +301,17 @@ int main()
             case 4:
                 status_utama = 0;
                 break;
+            default:
+                printf("Tidak ada di opsi");
+                break;
             }
         }
     } // akhir status_utama 1
 
     if (status_utama == 2)
     {
-        printf("\nselesai...");
+        //
+        printf("\n========== STRUK ==========");
         printf("\nNama = %s", struk_nama);
         printf("\nNo anggota = %d", struk_no_anggota);
         if (beli_atau_pinjam == 1)
@@ -273,12 +328,27 @@ int main()
         {
             printf("\t%d %s\n", struk_no_isbn[i], struk_judul_buku[i]);
         }
-        printf("Total harga = Rp%.2f", struk_total_harga);
+        printf("Total harga = Rp%.2f\n\n", struk_total_harga);
+        printf("========== TERIMA KASIH ==========\n\n");
     }
     //-------------------- ai ------------------
-    // free(struk_no_isbn);
-    // free(struk_judul_buku);
+    // menghapus alokasi memori yang telah digunakan agar tidak mengalami kebocoran memori dan penurunan performa
+    free(struk_no_isbn);
+    free(struk_judul_buku);
     //------------------------------------------
+
+    FILE *printmeme;
+
+    printmeme = fopen("meme.txt", "r");
+
+    char meme[1000];
+
+    while (fgets(meme, 1000, printmeme))
+    {
+        printf("%s", meme);
+    }
+
+    fclose(printmeme);
 
     return 0;
 }
