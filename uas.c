@@ -341,6 +341,11 @@ int main()
 
     printmeme = fopen("meme.txt", "r");
 
+    if (printmeme == NULL)
+    {
+        printf("Tidak dapat menampilkan meme, meme belum didownload?");
+    }
+    
     char meme[1000];
 
     while (fgets(meme, 1000, printmeme))
