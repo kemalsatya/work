@@ -86,6 +86,7 @@ int main()
                 break;
             case 2:
                 status_utama = 0;
+                status_tahapan = 0;
                 break;
             default:
                 printf("Tidak ada di pilihan\n");
@@ -110,6 +111,7 @@ int main()
                 break;
             case 3:
                 status_utama = 0;
+                status_tahapan = 0;
                 break;
             default:
                 printf("Tidak ada di opsi");
@@ -137,6 +139,7 @@ int main()
                 break;
             case 4:
                 status_utama = 0;
+                status_tahapan = 0;
                 break;
             default:
                 printf("\nTidak ada di opsi");
@@ -174,6 +177,7 @@ int main()
                 break;
             case 3:
                 status_utama = 0;
+                status_tahapan = 0;
                 break;
             default:
                 printf("\nTidak ada di opsi");
@@ -250,6 +254,7 @@ int main()
                 break;
             case 3:
                 status_utama = 0;
+                status_tahapan = 0;
                 break;
             default:
                 printf("Pilihan tidak tersedia");
@@ -300,6 +305,7 @@ int main()
                 break;
             case 4:
                 status_utama = 0;
+                status_tahapan = 0;
                 break;
             default:
                 printf("Tidak ada di opsi");
@@ -307,6 +313,10 @@ int main()
             }
         }
     } // akhir status_utama 1
+
+    if (status_utama == 0){
+        printf("Program dibatalkan...");
+    }
 
     if (status_utama == 2)
     {
@@ -343,7 +353,7 @@ int main()
 
     if (printmeme == NULL)
     {
-        printf("Tidak dapat menampilkan meme, meme belum didownload?");
+        printf("\n\nTidak dapat menampilkan meme, meme belum didownload?");
     }
     
     char meme[1000];
