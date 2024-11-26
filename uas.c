@@ -170,7 +170,6 @@ int main()
                 struk_judul_buku = malloc(struk_jumlah_buku * sizeof(*struk_judul_buku)); // Alokasi dinamis
                 //-------------------- ai --------------------------
                 status_tahapan++;
-                status_utama = 0;
                 break;
             case 2:
                 status_tahapan--;
@@ -247,7 +246,6 @@ int main()
                     }
                 }
                 status_tahapan++;
-                // status_utama = 0;
                 break;
             case 2:
                 status_tahapan--;
@@ -315,7 +313,7 @@ int main()
     } // akhir status_utama 1
 
     if (status_utama == 0){
-        printf("Program dibatalkan...");
+        printf("\nProgram dibatalkan...");
     }
 
     if (status_utama == 2)
@@ -346,24 +344,6 @@ int main()
     free(struk_no_isbn);
     free(struk_judul_buku);
     //------------------------------------------
-
-    FILE *printmeme;
-
-    printmeme = fopen("meme.txt", "r");
-
-    if (printmeme == NULL)
-    {
-        printf("\n\nTidak dapat menampilkan meme, meme belum didownload?");
-    }
-    
-    char meme[1000];
-
-    while (fgets(meme, 1000, printmeme))
-    {
-        printf("%s", meme);
-    }
-
-    fclose(printmeme);
 
     return 0;
 }
