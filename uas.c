@@ -1,7 +1,15 @@
-// Online C compiler to run C program online
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+void cetakStruk(
+    const char *nama,
+    int no_anggota,
+    int beli_atau_pinjam,
+    int jumlah_buku,
+    int no_isbn[],
+    char judul_buku[][20],
+    float total_harga);
 
 int main()
 {
@@ -16,10 +24,10 @@ int main()
     */
 
     // Informasi buku sesuai dengan index nya, index 0 di satu array berhubungan dengan array lain sebagai property dari buku
-    int array_no_isbn[4] = {1111, 2222, 3333, 4444};
-    char array_judul_buku[4][20] = {"'aku'", "'seorang'", "'kapten'", "'baja hitam'"};
-    int array_harga_beli[4] = {1500, 2500, 3500, 4500};
-    int array_harga_pinjam[4] = {1000, 2000, 3000, 4000};
+    int array_no_isbn[4] = {1526, 2247, 3015, 4312};
+    char array_judul_buku[4][20] = {"'Good/Bad Fortune'", "'Dunia Sophie'", "'The Lost Writer'", "'Kumala'"};
+    int array_harga_beli[4] = {50000, 50000, 75000, 85000};
+    int array_harga_pinjam[4] = {10000, 12000, 1500, 2500};
 
     // Index dari array-array di atas tidak berpengaruh dengan array_voucher
     int array_voucher[4] = {10, 25, 50, 75};
@@ -38,14 +46,12 @@ int main()
     int struk_no_anggota;
     int beli_atau_pinjam;
     int struk_jumlah_buku;
-    //--------- ai ------------
-    int *struk_no_isbn;
-    char(*struk_judul_buku)[20];
-    //-------------------------
-    int harga_sementara = 0;
+    int *struk_no_isbn = NULL;
+    char(*struk_judul_buku)[20] = NULL;
+    int harga_sementara = 0; // sebelum diberi voucher
     float struk_total_harga = 0;
     float struk_voucher;
-    float diskon_voucher;
+    float diskon_voucher; // digunakan dalam
 
     while (status_utama == 1) // Program dimulai
     {
@@ -56,11 +62,8 @@ int main()
             printf("1. Masukan nama\n2. Batal\n[Pilih 1/2]\n== ");
             scanf("%d", &tahap_satu);
 
-            //--------------------------------- ai -------------------------------------------
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF)
-            {
-            } // menghapus newline tersisa dari scanf terkakhir
+            // menghapus newline tersisa dari scanf terkakhir
+            getchar();
 
             switch (tahap_satu)
             {
@@ -69,7 +72,7 @@ int main()
                 // scanf("%s", &struk_nama);
                 fgets(struk_nama, sizeof(struk_nama), stdin);
 
-                size_t len = strlen(struk_nama);            // Mencari panjang string
+                int len = strlen(struk_nama);               // Mencari panjang string
                 if (len > 0 && struk_nama[len - 1] == '\n') // Periksa karakter terakhir
                 {
                     struk_nama[len - 1] = '\0'; // Ganti dengan null
@@ -80,11 +83,10 @@ int main()
                 {
                     memmove(struk_nama, struk_nama + 1, len); // memindah string ke kiri 1 langkah
                 }
-                //----------------------------------------------------------------------------------------
-
                 status_tahapan++;
                 break;
             case 2:
+                // keluar program
                 status_utama = 0;
                 status_tahapan = 0;
                 break;
@@ -110,6 +112,7 @@ int main()
                 status_tahapan--;
                 break;
             case 3:
+                // keluar program
                 status_utama = 0;
                 status_tahapan = 0;
                 break;
@@ -122,7 +125,7 @@ int main()
         {
             int tahap_tiga = 0;
             printf("\nTahap-3");
-            printf("\n1. Apakah kamu mau membeli buku?\n2. Apakah kamu mau meminjam buku?\n3. kembali\n4. Batal\n== ");
+            printf("\n1. Apakah kamu mau membeli buku?\n2. Apakah kamu mau meminjam buku?\n3. kembali\n4. Batal\n[Pilih 1/2/3]\n== ");
             scanf("%d", &tahap_tiga);
             switch (tahap_tiga)
             {
@@ -138,6 +141,7 @@ int main()
                 status_tahapan--;
                 break;
             case 4:
+                // keluar program
                 status_utama = 0;
                 status_tahapan = 0;
                 break;
@@ -165,16 +169,15 @@ int main()
             case 1:
                 printf("Masukan jumlah buku = ");
                 scanf("%d", &struk_jumlah_buku);
-                //-------------------- ai --------------------------
-                struk_no_isbn = malloc(struk_jumlah_buku * sizeof(int));                  // Alokasi dinamis
-                struk_judul_buku = malloc(struk_jumlah_buku * sizeof(*struk_judul_buku)); // Alokasi dinamis
-                //-------------------- ai --------------------------
+                struk_no_isbn = malloc(struk_jumlah_buku * sizeof(int)); // Alokasi dinamis untuk mengatasi bug
+                struk_judul_buku = malloc(struk_jumlah_buku * sizeof(*struk_judul_buku));
                 status_tahapan++;
                 break;
             case 2:
                 status_tahapan--;
                 break;
             case 3:
+                // keluar program
                 status_utama = 0;
                 status_tahapan = 0;
                 break;
@@ -251,6 +254,7 @@ int main()
                 status_tahapan--;
                 break;
             case 3:
+                // keluar program
                 status_utama = 0;
                 status_tahapan = 0;
                 break;
@@ -302,6 +306,7 @@ int main()
                 status_tahapan--;
                 break;
             case 4:
+                // keluar program
                 status_utama = 0;
                 status_tahapan = 0;
                 break;
@@ -312,14 +317,14 @@ int main()
         }
     } // akhir status_utama 1
 
-    if (status_utama == 0){
+    if (status_utama == 0)
+    {
         printf("\nProgram dibatalkan...");
     }
 
-    if (status_utama == 2)
+    else if (status_utama == 2)
     {
-        //
-        printf("\n========== STRUK ==========");
+        /*printf("\n========== STRUK ===========");
         printf("\nNama = %s", struk_nama);
         printf("\nNo anggota = %d", struk_no_anggota);
         if (beli_atau_pinjam == 1)
@@ -337,13 +342,51 @@ int main()
             printf("\t%d %s\n", struk_no_isbn[i], struk_judul_buku[i]);
         }
         printf("Total harga = Rp%.2f\n\n", struk_total_harga);
-        printf("========== TERIMA KASIH ==========\n\n");
+        printf("======= TERIMA KASIH =======\n\n");
+        */
+        cetakStruk(
+            struk_nama,
+            struk_no_anggota,
+            beli_atau_pinjam,
+            struk_jumlah_buku,
+            struk_no_isbn,
+            struk_judul_buku,
+            struk_total_harga);
     }
-    //-------------------- ai ------------------
-    // menghapus alokasi memori yang telah digunakan agar tidak mengalami kebocoran memori dan penurunan performa
+
+    // menghapus alokasi memori yang telah digunakan agar program tidak mengalami kebocoran memori
     free(struk_no_isbn);
     free(struk_judul_buku);
-    //------------------------------------------
 
     return 0;
+}
+
+void cetakStruk(
+    const char *nama, // menjadikan inputan user tidak dapat diubah kembali
+    int no_anggota,
+    int beli_atau_pinjam,
+    int jumlah_buku,
+    int no_isbn[],
+    char judul_buku[][20],
+    float total_harga)
+{
+    printf("\n========== STRUK ===========");
+    printf("\n\nNama = %s", nama);
+    printf("\nNo anggota = %d", no_anggota);
+    if (beli_atau_pinjam == 1)
+    {
+        printf("\nJumlah buku yang dibeli = ");
+    }
+    else if (beli_atau_pinjam == 2)
+    {
+        printf("\nJumlah buku yang dipinjam = ");
+    }
+    printf("%d buku", jumlah_buku);
+    printf("\nBuku :\n");
+    for (int i = 0; i < jumlah_buku; i++)
+    {
+        printf("\t%d %s\n", no_isbn[i], judul_buku[i]);
+    }
+    printf("Total harga = Rp%.2f\n\n", total_harga);
+    printf("======= TERIMA KASIH =======\n\n");
 }
