@@ -324,26 +324,6 @@ int main()
 
     else if (status_utama == 2)
     {
-        /*printf("\n========== STRUK ===========");
-        printf("\nNama = %s", struk_nama);
-        printf("\nNo anggota = %d", struk_no_anggota);
-        if (beli_atau_pinjam == 1)
-        {
-            printf("\nJumlah buku yang dibeli = ");
-        }
-        else if (beli_atau_pinjam == 2)
-        {
-            printf("\nJumlah buku yang dipinjam = ");
-        }
-        printf("%d buku", struk_jumlah_buku);
-        printf("\nBuku :\n");
-        for (int i = 0; i < struk_jumlah_buku; i++)
-        {
-            printf("\t%d %s\n", struk_no_isbn[i], struk_judul_buku[i]);
-        }
-        printf("Total harga = Rp%.2f\n\n", struk_total_harga);
-        printf("======= TERIMA KASIH =======\n\n");
-        */
         cetakStruk(
             struk_nama,
             struk_no_anggota,
